@@ -32,7 +32,7 @@ export default function Login() {
           Bejelentkezés
         </h1>
         <h2 className="mb-12 text-center">
-          Tovább a Google Drive szolgáltatásba
+          Tovább a Google Drive Clone szolgáltatásba
         </h2>
         <form className="flex flex-col space-y-4 w-96" onSubmit={handleSubmit}>
           {error && (

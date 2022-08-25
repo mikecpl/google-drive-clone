@@ -6,6 +6,8 @@ import Dashboard from './Dashboard';
 import RequireAuth from './RequireAuth';
 
 function App() {
+  document.title = 'Google Drive Clone';
+
   return (
     <div className="h-screen w-screen">
       <Router>
