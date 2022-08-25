@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useRef } from 'react';
 
 export default function Login() {
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
   return (
     <div className="h-full w-full flex flex-1 items-center justify-center">
       <div className="flex flex-col border rounded-md p-12">
@@ -11,11 +14,29 @@ export default function Login() {
           Tovább a Google Drive szolgáltatásba
         </h2>
         <form className="flex flex-col space-y-4 w-96">
-          <input type="text"
-            name="name"
-            className="border p-4 rounded-md"
-            placeholder="E-mail cím"
-          />
+          <label className="relative cursor-text">
+            <input type="text"
+              name="email"
+              ref={emailRef}
+              className="border p-4 rounded-md w-full text-gray-600 focus:text-blue-600 bg-white border-black border-opacity-50 outline-none focus:border-blue-600 placeholder-black placeholder-opacity-0 transition duration-200"
+              placeholder="E-mail cím"
+            />
+            <span className="text-gray-600 text-opacity-80 bg-white absolute left-4 top-4 px-1 transition duration-200 input-text">
+              E-mail cím
+            </span>
+          </label>
+
+          <label className="relative cursor-text">
+            <input type="password"
+              name="password"
+              ref={passwordRef}
+              className="border p-4 rounded-md w-full text-gray-600 focus:text-blue-600 bg-white border-black border-opacity-50 outline-none focus:border-blue-600 placeholder-black placeholder-opacity-0 transition duration-200"
+              placeholder="Jelszó"
+            />
+            <span className="text-gray-600 text-opacity-80 bg-white absolute left-4 top-4 px-1 transition duration-200 input-text">
+              Jelszó
+            </span>
+          </label>
 
           <div className="text-sm text-gray-600 text-justify">
             Nem a saját számítógépét használja? Használja a vendég módot a privát bejelentkezéshez.
