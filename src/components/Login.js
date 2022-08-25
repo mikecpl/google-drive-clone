@@ -16,7 +16,6 @@ export default function Login() {
       setIsLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
     } catch (e) {
-      console.log(e);
       setError('Hibás adatok! Kérjük próbálja újra!');
     } finally {
       setIsLoading(false);
