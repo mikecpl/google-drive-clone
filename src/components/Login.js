@@ -1,8 +1,27 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import useAuth from '../hooks/useAuth';
 
 export default function Login() {
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
+  const { login } = useAuth();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+      setError('');
+      setIsLoading(true);
+      await login(emailRef.current.value, passwordRef.current.value);
+    } catch (e) {
+      console.log(e);
+      setError('Hibás adatok! Kérjük próbálja újra!');
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <div className="h-full w-full flex flex-1 items-center justify-center">
@@ -13,7 +32,13 @@ export default function Login() {
         <h2 className="mb-12 text-center">
           Tovább a Google Drive szolgáltatásba
         </h2>
-        <form className="flex flex-col space-y-4 w-96">
+        <form className="flex flex-col space-y-4 w-96" onSubmit={handleSubmit}>
+          {error && (
+            <div className="text-red-600">
+              {error}
+            </div>
+          )}
+
           <label className="relative cursor-text">
             <input type="text"
               name="email"
@@ -47,7 +72,7 @@ export default function Login() {
               Fiók létrehozása
             </a>
 
-            <button type="submit" className="bg-blue-600 hover:bg-blue-800 text-white border py-2 px-6 rounded-md">
+            <button disabled={isLoading} type="submit" className="bg-blue-600 hover:bg-blue-800 text-white border py-2 px-6 rounded-md">
               Bejelentkezés
             </button>
           </div>
