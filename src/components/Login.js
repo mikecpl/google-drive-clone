@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 export default function Login() {
@@ -67,9 +68,9 @@ export default function Login() {
           </div>
 
           <div className="flex flex-row justify-between items-center space-x-4">
-            <a href="https://www.google.com" className="text-blue-600 hover:text-blue-800">
+            <Link to="/signup" className="text-blue-600 hover:text-blue-800">
               Fiók létrehozása
-            </a>
+            </Link>
 
             <button disabled={isLoading} type="submit" className="bg-blue-600 hover:bg-blue-800 text-white border py-2 px-6 rounded-md">
               Bejelentkezés
