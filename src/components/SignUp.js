@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 export default function SignUp() {
@@ -9,6 +9,7 @@ export default function SignUp() {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const { signUp } = useAuth();
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -23,6 +24,7 @@ export default function SignUp() {
       setError('');
       setIsLoading(true);
       await signUp(emailRef.current.value, passwordRef.current.value);
+      navigate('/');
     } catch (e) {
       setError('Hibás adatok! Kérjük próbálja újra!');
     } finally {

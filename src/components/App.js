@@ -3,6 +3,7 @@ import Login from './Login';
 import SignUp from './SignUp';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Dashboard from './Dashboard';
+import RequireAuth from './RequireAuth';
 
 function App() {
   return (
@@ -10,9 +11,9 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
-            <Route exact path="/" element={<Dashboard />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route exact path="/" element={<RequireAuth><Dashboard /></RequireAuth>} />
+            <Route path="/login" element={<RequireAuth required={false}><Login /></RequireAuth>} />
+            <Route path="/signup" element={<RequireAuth required={false}><SignUp /></RequireAuth>} />
             <Route
               path="*"
               element={
