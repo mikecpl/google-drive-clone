@@ -1,14 +1,31 @@
-import { Fragment, useRef } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
+import { database } from '../../firebase';
+import useAuth from '../../hooks/useAuth';
+import { addDoc, serverTimestamp } from 'firebase/firestore';
 
-export default function AddFolderModal({ open, setOpen, title, subTitle }) {
+export default function AddFolderModal({ open, setOpen }) {
   const cancelButtonRef = useRef();
-  const nameRef = useRef();
+  const { user } = useAuth();
+  const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit() {
-    console.log(nameRef.current.value); // TODO
+  async function handleSubmit() {
+    setIsLoading(true);
+
+    await addDoc(database.folders, {
+      name: name,
+      // parentId
+      userId: user.uid,
+      // path
+      createdAt: serverTimestamp()
+    });
+
+    setName('');
+    setOpen(false);
+    setIsLoading(false);
   }
 
   return (
@@ -52,7 +69,8 @@ export default function AddFolderModal({ open, setOpen, title, subTitle }) {
                         <form className="">
                           <input type="text"
                             name="email"
-                            ref={nameRef}
+                            value={name}
+                            onChange={e => setName(e.target.value)}
                             className="border p-4 rounded-md w-full text-gray-600 focus:text-blue-600 border-black border-opacity-50 outline-none focus:border-blue-600 placeholder-opacity-0 transition duration-200"
                             placeholder="Név"
                           />
@@ -64,6 +82,7 @@ export default function AddFolderModal({ open, setOpen, title, subTitle }) {
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
+                    disabled={isLoading}
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={handleSubmit}
                   >
