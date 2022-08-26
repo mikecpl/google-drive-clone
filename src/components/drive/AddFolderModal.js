@@ -6,7 +6,7 @@ import { database } from '../../firebase';
 import useAuth from '../../hooks/useAuth';
 import { addDoc, serverTimestamp } from 'firebase/firestore';
 
-export default function AddFolderModal({ open, setOpen }) {
+export default function AddFolderModal({ open, setOpen, currentFolder }) {
   const cancelButtonRef = useRef();
   const { user } = useAuth();
   const [name, setName] = useState('');
@@ -17,7 +17,7 @@ export default function AddFolderModal({ open, setOpen }) {
 
     await addDoc(database.folders, {
       name: name,
-      // parentId
+      parentId: currentFolder.id,
       userId: user.uid,
       // path
       createdAt: serverTimestamp()
