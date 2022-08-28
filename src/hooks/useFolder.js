@@ -1,11 +1,12 @@
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useReducer } from "react";
-import { firestore } from "../firebase";
+import { database, firestore } from "../firebase";
 import useAuth from "./useAuth";
 
 const ACTIONS = {
   SET_FOLDER: 'set-folder',
-  UPDATE_FOLDER: 'update-folder'
+  UPDATE_FOLDER: 'update-folder',
+  SET_CHILD_FOLDERS: 'set-child-folders',
 }
 
 const ROOT_FOLDER = {
@@ -28,6 +29,12 @@ function reducer(state, { type, payload }) {
       return {
         ...state,
         folder: payload.folder,
+      }
+
+    case ACTIONS.SET_CHILD_FOLDERS:
+      return {
+        ...state,
+        childFolders: payload.childFolders,
       }
 
     default:
@@ -76,9 +83,19 @@ export function useFolder(folderId = null, folder = null) {
   }, [folderId]);
 
   useEffect(() => {
-    // TODO 
+    const q = query(database.folders,
+      where('parentId', '==', folderId),
+      where('userId', '==', user.uid),
+      orderBy('createdAt', 'desc'));
 
-    //onSnapshot()
+    return onSnapshot(q, snapshot => {
+      dispatch({
+        type: ACTIONS.SET_CHILD_FOLDERS,
+        payload: {
+          childFolders: snapshot.docs.map(database.formatDoc)
+        }
+      });
+    });
   }, [folderId, user]);
 
   return state;

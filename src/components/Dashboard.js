@@ -20,7 +20,7 @@ export default function Dashboard() {
         {childFolders.length > 0 && (
           <div className="flex flex-row space-y-4">
             {childFolders.map((childFolder) => (
-              <div key={folder.id}>
+              <div key={childFolder.id}>
                 <Folder folder={childFolder} />
               </div>
             ))}

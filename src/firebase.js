@@ -18,7 +18,10 @@ const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(app);
 export const database = {
   folders: collection(firestore, 'folders'),
-  files: collection(firestore, 'files')
+  files: collection(firestore, 'files'),
+  formatDoc: doc => {
+    return { id: doc.id, ...doc.data() }
+  },
 }
 export const auth = getAuth(app);
 export default app;
