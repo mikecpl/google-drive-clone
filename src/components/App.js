@@ -14,6 +14,8 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route exact path="/" element={<RequireAuth><Dashboard /></RequireAuth>} />
+            <Route exact path="/folder/:folderId" element={<RequireAuth><Dashboard /></RequireAuth>} />
+
             <Route path="/login" element={<RequireAuth required={false}><Login /></RequireAuth>} />
             <Route path="/signup" element={<RequireAuth required={false}><SignUp /></RequireAuth>} />
             <Route
