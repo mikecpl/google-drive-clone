@@ -9,7 +9,7 @@ const ACTIONS = {
   SET_CHILD_FOLDERS: 'set-child-folders',
 }
 
-const ROOT_FOLDER = {
+export const ROOT_FOLDER = {
   id: null,
   name: 'Root',
   path: []
@@ -72,7 +72,7 @@ export function useFolder(folderId = null, folder = null) {
     getDoc(docRef).then(response => {
       return dispatch({
         type: ACTIONS.UPDATE_FOLDER,
-        payload: { folder: response.data() }
+        payload: { folder: database.formatDoc(response) }
       });
     }).catch(() => {
       return dispatch({
