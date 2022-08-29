@@ -7,6 +7,7 @@ const ACTIONS = {
   SET_FOLDER: 'set-folder',
   UPDATE_FOLDER: 'update-folder',
   SET_CHILD_FOLDERS: 'set-child-folders',
+  SET_CHILD_FILES: 'set-child-files'
 }
 
 export const ROOT_FOLDER = {
@@ -35,6 +36,12 @@ function reducer(state, { type, payload }) {
       return {
         ...state,
         childFolders: payload.childFolders,
+      }
+
+    case ACTIONS.SET_CHILD_FILES:
+      return {
+        ...state,
+        childFiles: payload.childFiles,
       }
 
     default:
@@ -93,6 +100,22 @@ export function useFolder(folderId = null, folder = null) {
         type: ACTIONS.SET_CHILD_FOLDERS,
         payload: {
           childFolders: snapshot.docs.map(database.formatDoc)
+        }
+      });
+    });
+  }, [folderId, user]);
+
+  useEffect(() => {
+    const q = query(database.files,
+      where('folderId', '==', folderId),
+      where('userId', '==', user.uid),
+      orderBy('createdAt', 'desc'));
+
+    return onSnapshot(q, snapshot => {
+      dispatch({
+        type: ACTIONS.SET_CHILD_FILES,
+        payload: {
+          childFiles: snapshot.docs.map(database.formatDoc)
         }
       });
     });
