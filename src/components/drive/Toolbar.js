@@ -2,11 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import AddFolderModal from './AddFolderModal';
-import { useFolder } from '../../hooks/useFolder';
 
-export default function Toolbar() {
+export default function Toolbar({ currentFolder }) {
   const [isAddFolderModalOpen, setIsAddFolderModalOpen] = useState(false);
-  const { folder } = useFolder();
 
   function openUploadFileModal() {
 
@@ -28,7 +26,7 @@ export default function Toolbar() {
 
       <AddFolderModal open={isAddFolderModalOpen}
         setOpen={setIsAddFolderModalOpen}
-        currentFolder={folder}
+        currentFolder={currentFolder}
       />
     </div>
   )

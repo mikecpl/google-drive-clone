@@ -15,16 +15,14 @@ export default function Dashboard() {
       <NavBar />
       <div className="container mx-auto">
         <div className="flex flex-row items-center justify-between py-4">
-          <Breadcrumb />
-          <Toolbar />
+          <Breadcrumb currentFolder={folder} />
+          <Toolbar currentFolder={folder} />
         </div>
 
         {childFolders.length > 0 && (
-          <div className="flex flex-row space-y-4">
+          <div className="flex flex-row space-x-4">
             {childFolders.map((childFolder) => (
-              <div key={childFolder.id}>
-                <Folder folder={childFolder} />
-              </div>
+              <Folder folder={childFolder} key={childFolder.id} />
             ))}
           </div>
         )}
