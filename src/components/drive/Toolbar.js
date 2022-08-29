@@ -2,10 +2,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import AddFolderModal from './AddFolderModal';
-import { storage } from '../../firebase';
+import { database, storage } from '../../firebase';
 import useAuth from '../../hooks/useAuth';
 import { ROOT_FOLDER } from '../../hooks/useFolder';
-import { ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { addDoc, serverTimestamp } from 'firebase/firestore';
 
 export default function Toolbar({ currentFolder }) {
   const [isAddFolderModalOpen, setIsAddFolderModalOpen] = useState(false);
@@ -25,9 +26,22 @@ export default function Toolbar({ currentFolder }) {
 
     const fileRef = ref(storage, `/files/${user.uid}/${filePath}`);
 
-    uploadBytes(fileRef, file).then(response => {
-      // TODO add to db
-    });
+    const uploadTask = uploadBytesResumable(fileRef, file);
+    uploadTask.on('state_changed',
+      snapshot => { },
+      error => { },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(url => {
+          addDoc(database.files, {
+            name: file.name,
+            url,
+            userId: user.uid,
+            folderId: currentFolder.id,
+            createdAt: serverTimestamp()
+          });
+        });
+      }
+    );
   }
 
   function openAddFolderModal() {
