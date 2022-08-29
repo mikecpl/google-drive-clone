@@ -18,7 +18,7 @@ export default function NavBar() {
           <span className="self-center text-xl font-semibold whitespace-nowrap text-blue-600">Google Drive Clone</span>
         </Link>
         <div className="w-auto" id="navbar-default">
-          <button onClick={handleLogout} className="hover:text-blue-600">
+          <button onClick={handleLogout} className="text-gray-500 hover:text-blue-600">
             Kijelentkezés
           </button>
         </div>
